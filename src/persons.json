@@ -1,0 +1,26 @@
+[
+  {
+    "id": "1",
+    "name": "Nikita",
+    "age": "23",
+    "hobbies" : ["Sleep", "Dance", "Sing"]
+  },
+  {
+    "id": "2",
+    "name": "Gleb",
+    "age": "25",
+    "hobbies" : ["Walk", "Kill", "Fight"]
+  },
+  {
+    "id": "3",
+    "name": "John",
+    "age": "28",
+    "hobbies" : ["Swim", "Jam", "Play"]
+  },
+  {
+    "id": "4",
+    "name": "Boris",
+    "age": "80",
+    "hobbies" : ["Sit", "Lay", "Watch"]
+  }
+]

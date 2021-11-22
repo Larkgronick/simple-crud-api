@@ -1,0 +1,23 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "nodemon": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Larkgronick/simple-crud-api.git"
+  },
+  "author": "Larkgronick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Larkgronick/simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/Larkgronick/simple-crud-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
