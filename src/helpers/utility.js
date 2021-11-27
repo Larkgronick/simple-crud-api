@@ -1,5 +1,10 @@
 const fs = require('fs');
 
+const showError = (res, error, message) => {
+    res.writeHeader(error, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({message: message}));
+}
+
 const writeData = (path, content) => {
     try {
         fs.writeFileSync(path, JSON.stringify(content), 'utf-8');
@@ -35,6 +40,7 @@ const checkPerson = (person) => {
 }
 
 module.exports = {
+    showError,
     writeData,
     getPostData,
     checkPerson
