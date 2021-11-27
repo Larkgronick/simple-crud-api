@@ -1,7 +1,8 @@
+require('dotenv').config();
 const http = require('http');
 const {getPersons, getPerson, createPerson, updatePerson, deletePerson} = require('./src/controllers/personController');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 const server = http.createServer((req, res) => {
     const id = req.url.split('/')[2]
