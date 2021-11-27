@@ -1,4 +1,5 @@
 const Person = require("../models/personModel");
+const { getPostData } = require('../helpers/utility')
 
 // get all persons
 // GET /person
@@ -31,18 +32,72 @@ const getPerson = async (req, res, id) => {
 }
 
 // create a person
-// POST /person
+// POST /person/:id
+
 const createPerson = async (req, res) => {
     try{
+        const body = await getPostData(req);
+        const {name, age, hobbies} = JSON.parse(body);
+
         const person = {
-            title: 'demo person',
-            name: 'John Doe',
-            age: '18',
-            hobbies: ['pray', 'plan', 'kill']
+            name,
+            age,
+            hobbies
         }
+
         const newPerson = await Person.create(person)
         res.writeHead(201, {'Content-Type': 'application/json'})
         res.end(JSON.stringify(newPerson))
+
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+// update a person
+// PUT /person
+
+const updatePerson = async (req, res, id) => {
+    try{
+        const person = await Person.findById(id)
+
+        if(!person) {
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Person not found'}))
+        } else {
+            const body = await getPostData(req);
+            const { name, age, hobbies } = JSON.parse(body);
+
+            const personData = {
+                name: name || person.name,
+                age: age || person.age,
+                hobbies: hobbies || person.hobbies
+            }
+
+            const updatedPerson = await Person.update(id, personData)
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify(updatedPerson))
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+// delete person
+// DELETE /person/:id
+
+const deletePerson = async (req, res, id) => {
+    try{
+        const person = await Person.findById(id)
+        if(!person) {
+            res.writeHead(404, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Person not found'}))
+        } else {
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(person))
+        }
+
     } catch (e) {
         console.log(e)
     }
@@ -51,5 +106,6 @@ const createPerson = async (req, res) => {
 module.exports = {
     getPersons,
     getPerson,
-    createPerson
+    createPerson,
+    updatePerson
 }

@@ -24,10 +24,20 @@ const create = (person) => {
     })
 }
 
+const update = (id, person) => {
+    return new Promise((resolve, reject) => {
+        const index = persons.findIndex(el => el.id === id);
+        persons[index] = {id, ...person}
+        writeData('./src/persons.json', persons)
+        resolve(persons[index])
+    })
+}
+
 
 module.exports = {
     findAll,
     findById,
-    create
+    create,
+    update
 }
 
