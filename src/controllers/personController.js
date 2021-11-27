@@ -94,8 +94,9 @@ const deletePerson = async (req, res, id) => {
             res.writeHead(404, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({message: 'Person not found'}))
         } else {
+            await Person.remove(id);
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(person))
+            res.end(JSON.stringify({message: `Person ${id} deleted`}))
         }
 
     } catch (e) {
@@ -107,5 +108,6 @@ module.exports = {
     getPersons,
     getPerson,
     createPerson,
-    updatePerson
+    updatePerson,
+    deletePerson
 }

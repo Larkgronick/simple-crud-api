@@ -1,4 +1,4 @@
-const persons = require('../persons.json');
+let persons = require('../persons.json');
 const { v4: uuidv4 } = require('uuid');
 const { writeData } = require('../helpers/utility')
 
@@ -33,11 +33,20 @@ const update = (id, person) => {
     })
 }
 
+const remove = (id) => {
+    return new Promise((resolve, reject) => {
+        persons = persons.filter((el) => el.id !== id);
+        writeData('./src/persons.json', persons)
+        resolve()
+    })
+}
+
 
 module.exports = {
     findAll,
     findById,
     create,
-    update
+    update,
+    remove
 }
 
