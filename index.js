@@ -1,5 +1,5 @@
 const {getPersons, getPerson, createPerson, updatePerson, deletePerson} = require('./src/controllers/personController');
-const { showError} = require('./src/helpers/utility')
+const { showRespond} = require('./src/helpers/utility')
 require('dotenv').config();
 const http = require('http');
 const PORT = process.env.PORT || 8000;
@@ -17,7 +17,7 @@ const server = http.createServer((req, res) => {
     } else if(req.url.match(/\/person\/([0-9]+)/) && req.method === 'DELETE') {
         deletePerson(req, res, id)
     } else{
-        showError(res, 500, 'Incorrect request')
+        showRespond(res, 500, {message: 'Incorrect request'})
     }
 })
 

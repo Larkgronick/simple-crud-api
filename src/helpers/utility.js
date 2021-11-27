@@ -1,8 +1,8 @@
 const fs = require('fs');
 
-const showError = (res, error, message) => {
-    res.writeHeader(error, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({message: message}));
+const showRespond = (res, code, message ) => {
+    res.writeHead(code, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify(message))
 }
 
 const writeData = (path, content) => {
@@ -20,7 +20,6 @@ const getPostData = (req) => {
             req.on('data', (chunk) => {
                 body += chunk.toString()
             })
-
             req.on('end', () => {
                 resolve(body)
             })
@@ -40,7 +39,7 @@ const checkPerson = (person) => {
 }
 
 module.exports = {
-    showError,
+    showRespond,
     writeData,
     getPostData,
     checkPerson

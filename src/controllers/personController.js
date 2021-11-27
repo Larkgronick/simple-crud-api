@@ -1,121 +1,88 @@
 const Person = require("../models/personModel");
-const { getPostData, checkPerson, showError} = require('../helpers/utility')
-const { validate } = require('uuid')
+const { getPostData, checkPerson, showRespond} = require('../helpers/utility');
+const { validate } = require('uuid');
 
-// get all persons
-// GET /person
 const getPersons = async (req, res) => {
     try{
-        const persons = await Person.findAll()
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify(persons))
+        const persons = await Person.findAll();
+        showRespond(res, 200, persons);
     } catch (e) {
         console.log(e)
     }
 }
 
-// get single person
-// GET /person/:id
 const getPerson = async (req, res, id) => {
     try{
-        const person = await Person.findById(id)
-        if(!person) {
-            res.writeHead(404, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person not found'}))
-        } else if(!validate(id)) {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person has invalid ID'}))
-        } else {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(person))
-        }
+        const person = await Person.findById(id);
 
+        if(!person) {
+            showRespond(res, 404, { message: 'Person not found'});
+        } else if(!validate(id)) {
+            showRespond(res, 400, {message: 'Person has invalid ID'});
+        } else {
+            showRespond(res, 200, person);
+        }
     } catch (e) {
         console.log(e)
     }
 }
 
-// create a person
-// POST /person/:id
 const createPerson = async (req, res) => {
     try{
         const body = await getPostData(req);
         const {name, age, hobbies} = JSON.parse(body);
-        const person = {
-            name,
-            age,
-            hobbies
-        }
-
-        const message = checkPerson(person)
+        const person = { name, age, hobbies };
+        const message = checkPerson(person);
 
         if(message){
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(message))
+            showRespond(res, 400, {message});
         } else {
-            const newPerson = await Person.create(person)
-            res.writeHead(201, {'Content-Type': 'application/json'})
-            res.end(JSON.stringify(newPerson))
+            const newPerson = await Person.create(person);
+            showRespond(res, 201, newPerson);
         }
-
-
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
-
-// update a person
-// PUT /person
 
 const updatePerson = async (req, res, id) => {
     try{
         const person = await Person.findById(id)
 
         if(!person) {
-            res.writeHead(404, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person not found'}))
+            showRespond(res, 404, {message: 'Person not found'});
         } if(!validate(id)) {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person has invalid ID'}))
+            showRespond(res, 400, {message: 'Person has invalid ID'});
         } else {
             const body = await getPostData(req);
             const { name, age, hobbies } = JSON.parse(body);
-
             const personData = {
                 name: name || person.name,
                 age: age || person.age,
                 hobbies: hobbies || person.hobbies
             }
-
-            const updatedPerson = await Person.update(id, personData)
-            res.writeHead(201, {'Content-Type': 'application/json'})
-            res.end(JSON.stringify(updatedPerson))
+            const updatedPerson = await Person.update(id, personData);
+            showRespond(res, 201, updatedPerson);
         }
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
-// delete person
-// DELETE /person/:id
-
 const deletePerson = async (req, res, id) => {
     try{
-        const person = await Person.findById(id)
+        const person = await Person.findById(id);
+
         if(!person) {
-            res.writeHead(404, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person not found'}))
+            showRespond(res, 404, {message: 'Person not found'});
         } if (!validate(id)){
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: 'Person has invalid ID'}))
+            showRespond(res, 400, {message: 'Person has invalid ID'});
         } else {
             await Person.remove(id);
-            res.writeHead(204, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({message: `Person ${id} deleted`}))
+            showRespond(res, 204, {message: `Person ${id} deleted`});
         }
-
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
