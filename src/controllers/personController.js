@@ -23,15 +23,15 @@ const getPerson = async (req, res, id) => {
             showRespond(res, 200, person);
         }
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 
 const createPerson = async (req, res) => {
     try{
         const body = await getPostData(req);
-        const {name, age, hobbies} = JSON.parse(body);
-        const person = { name, age, hobbies };
+        const {id, name, age, hobbies} = JSON.parse(body);
+        const person = { id, name, age, hobbies };
         const message = checkPerson(person);
 
         if(message){
@@ -47,7 +47,7 @@ const createPerson = async (req, res) => {
 
 const updatePerson = async (req, res, id) => {
     try{
-        const person = await Person.findById(id)
+        const person = await Person.findById(id);
 
         if(!person) {
             showRespond(res, 404, {message: 'Person not found'});
@@ -60,7 +60,7 @@ const updatePerson = async (req, res, id) => {
                 name: name || person.name,
                 age: age || person.age,
                 hobbies: hobbies || person.hobbies
-            }
+            };
             const updatedPerson = await Person.update(id, personData);
             showRespond(res, 201, updatedPerson);
         }
