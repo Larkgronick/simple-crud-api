@@ -19,5 +19,8 @@
   "homepage": "https://github.com/Larkgronick/simple-crud-api#readme",
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "uuid": "^8.3.2"
   }
 }
