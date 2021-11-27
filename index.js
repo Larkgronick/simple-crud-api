@@ -1,15 +1,21 @@
 const http = require('http');
-const persons = require('./src/persons.json');
+const { getPersons, getPerson } = require('./src/controllers/personController')
 
-const hostname = '127.0.0.1';
+
 const PORT = process.env.PORT || 3000;
 
 const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(persons))
+    if(req.url === '/person' && req.method === 'GET') {
+        getPersons(req, res);
+    } else if(req.url.match(/\/person\/([0-9]+)/) && req.method === 'GET'){
+        const id = req.url.split('/')[2]
+        getPerson(req, res, id)
+    } else {
+        res.writeHeader(404, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({message: 'Route not found'}))
+    }
 })
 
-server.listen(PORT, hostname, () => {
-    console.log(`Server running at http://${hostname}:${PORT}/`)
+server.listen(PORT,() => {
+    console.log(`Server running at port:${PORT}/`)
 })
