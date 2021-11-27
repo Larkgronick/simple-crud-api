@@ -1,18 +1,22 @@
 const http = require('http');
-const { getPersons, getPerson } = require('./src/controllers/personController')
-
+const { getPersons, getPerson } = require('./src/controllers/personController');
+const { isUUID } = require('./src/helpers/utility');
 
 const PORT = process.env.PORT || 3000;
 
+
 const server = http.createServer((req, res) => {
+    const id = req.url.split('/')[2]
     if(req.url === '/person' && req.method === 'GET') {
         getPersons(req, res);
     } else if(req.url.match(/\/person\/([0-9]+)/) && req.method === 'GET'){
-        const id = req.url.split('/')[2]
         getPerson(req, res, id)
+    } else if (!isUUID(id)) {
+        res.writeHeader(400, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({message: 'peson ID is not valid'}));
     } else {
         res.writeHeader(404, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify({message: 'Route not found'}))
+        res.end(JSON.stringify({message: 'Person not found'}));
     }
 })
 
