@@ -25,7 +25,17 @@ const getPostData = (req) => {
     })
 }
 
+const checkPerson = (person) => {
+    const missing = Object.keys(person).find(el => !person[el])
+    if(missing) {
+        return `${missing} field are missing `;
+    } else {
+        return false;
+    }
+}
+
 module.exports = {
     writeData,
-    getPostData
+    getPostData,
+    checkPerson
 }

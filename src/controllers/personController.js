@@ -1,5 +1,5 @@
 const Person = require("../models/personModel");
-const { getPostData } = require('../helpers/utility')
+const { getPostData, checkPerson } = require('../helpers/utility')
 const { validate } = require('uuid')
 
 // get all persons
@@ -41,16 +41,22 @@ const createPerson = async (req, res) => {
     try{
         const body = await getPostData(req);
         const {name, age, hobbies} = JSON.parse(body);
-
         const person = {
             name,
             age,
             hobbies
         }
 
-        const newPerson = await Person.create(person)
-        res.writeHead(201, {'Content-Type': 'application/json'})
-        res.end(JSON.stringify(newPerson))
+        const message = checkPerson(person)
+
+        if(message){
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(message))
+        } else {
+            const newPerson = await Person.create(person)
+            res.writeHead(201, {'Content-Type': 'application/json'})
+            res.end(JSON.stringify(newPerson))
+        }
 
 
     } catch (e) {
