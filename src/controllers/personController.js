@@ -37,7 +37,6 @@ const getPerson = async (req, res, id) => {
 
 // create a person
 // POST /person/:id
-
 const createPerson = async (req, res) => {
     try{
         const body = await getPostData(req);
@@ -69,6 +68,9 @@ const updatePerson = async (req, res, id) => {
         if(!person) {
             res.writeHead(404, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({message: 'Person not found'}))
+        } if(!validate(id)) {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Person has invalid ID'}))
         } else {
             const body = await getPostData(req);
             const { name, age, hobbies } = JSON.parse(body);
@@ -97,9 +99,12 @@ const deletePerson = async (req, res, id) => {
         if(!person) {
             res.writeHead(404, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({message: 'Person not found'}))
+        } if (!validate(id)){
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({message: 'Person has invalid ID'}))
         } else {
             await Person.remove(id);
-            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.writeHead(204, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({message: `Person ${id} deleted`}))
         }
 
