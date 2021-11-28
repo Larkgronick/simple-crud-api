@@ -30,15 +30,19 @@ const getPerson = async (req, res, id) => {
 const createPerson = async (req, res) => {
     try{
         const body = await getPostData(req);
-        const {id, name, age, hobbies} = JSON.parse(body);
-        const person = { id, name, age, hobbies };
-        const message = checkPerson(person);
+        if(body.length > 0) {
+            const {id, name, age, hobbies} = JSON.parse(body);
+            const person = { id, name, age, hobbies };
+            const message = checkPerson(person);
 
-        if(message){
-            showRespond(res, 400, {message});
+            if(message){
+                showRespond(res, 400, {message});
+            } else {
+                const newPerson = await Person.create(person);
+                showRespond(res, 201, newPerson);
+            }
         } else {
-            const newPerson = await Person.create(person);
-            showRespond(res, 201, newPerson);
+            showRespond(res, 400, {message: 'Request is empty!'});
         }
     } catch (e) {
         console.log(e);
