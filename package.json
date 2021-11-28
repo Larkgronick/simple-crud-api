@@ -1,0 +1,29 @@
+{
+  "name": "simple-crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:prod": "webpack",
+    "start:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Larkgronick/simple-crud-api.git"
+  },
+  "author": "Larkgronick",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Larkgronick/simple-crud-api/issues"
+  },
+  "homepage": "https://github.com/Larkgronick/simple-crud-api#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "uuid": "^8.3.2"
+  }
+}
